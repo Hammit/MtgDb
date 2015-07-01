@@ -18,6 +18,10 @@ Install it yourself as:
 Downloading card information from [The Gatherer](http://gatherer.wizards.com/ "The Gatherer")
 can take a long time. Be prepared to wait a while when creating the db.
 
+## Misc
+* Schema for the Db is in sql/cards.schema.sql
+* bundle exec bin/mtg_db help
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/mtg_db/fork )
