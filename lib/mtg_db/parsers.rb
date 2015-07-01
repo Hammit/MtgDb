@@ -113,7 +113,12 @@ module MtgDb
       end
 
       def rules(node)
-        node.search('div.rulesText').text.strip
+        #node.search('div.rulesText').text.strip # doesn't account for images or multiple paragraphs formatting properly
+        rules_nodeset = node.search('div.rulesText')
+        rules_nodeset.search('img').each {|node| node.replace( "{#{node['alt']}}" )} # replace images in the rules with the image alt text
+        rules_text = ''
+        rules_nodeset.search('p').each {|node| rules_text << node.text + "\n"}
+        return rules_text.chomp
       end
 
       def power(node)

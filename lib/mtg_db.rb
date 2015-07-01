@@ -12,6 +12,8 @@ module MtgDb
   DOUBLE_FACED_DIR = 'double-faced'
   SCHEMA_FILENAME = File.join(__dir__, '..', 'sql', 'cards.schema.sql')
 
+  @@standard_files_downloaded = nil
+
   def self.create_db(name)
     schema = File.new(SCHEMA_FILENAME).readlines.join
     db = SQLite3::Database.new(name)
@@ -27,6 +29,7 @@ module MtgDb
 
     downloader = MtgDb::Downloaders::AllCardsStandardDownloader.new(:output_dir => tmp_dir)
     downloader.start if downloader.is_empty?
+    @@standard_files_downloaded = downloader.files
   end
 
   def self.add_all_cards_to_db(db_filename, tmp_dir)
@@ -43,8 +46,7 @@ module MtgDb
     agent = Mechanize.new
     agent.pluggable_parser.html = MtgDb::Parsers::GathererParser
 
-    files = Dir.glob(File.join(tmp_dir, 'page.*.html')).sort
-    files.each do |file|
+    @@standard_files_downloaded.each do |file|
       filepath = File.absolute_path file
       uri = "file://#{filepath}"
 

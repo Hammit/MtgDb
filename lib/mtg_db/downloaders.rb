@@ -55,6 +55,10 @@ module MtgDb
           page_num += 1
         end
       end
+      
+      def files
+        Dir.glob(File.join(@output_dir, 'page.*.html')).sort
+      end
     end
 
     # Download a detailed card page given the card's multiverse_id param
