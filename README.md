@@ -11,8 +11,8 @@ Install it yourself as:
 
 ## Usage
 
-mtg_db create NAME     # create an MtG sqlite3 Db with the given NAME
-mtg_db help [COMMAND]  # Describe available commands or one specific command
+    mtg_db create NAME     # create an MtG sqlite3 Db with the given NAME
+    mtg_db help [COMMAND]  # Describe available commands or one specific command
 
 ## Notes
 Downloading card information from [The Gatherer](http://gatherer.wizards.com/ "The Gatherer")
