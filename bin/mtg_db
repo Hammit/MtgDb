@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'mtg_db'
+require 'mtg_db/cli'
+
+MtgDb::CLI.start
