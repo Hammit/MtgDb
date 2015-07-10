@@ -6,8 +6,8 @@ module MtgDb
   class CLI < Thor
     include MtgDb
 
-    desc "create NAME", "create an MtG sqlite3 Db with the given NAME"
     option :tmp_dir, :default => TMP_DIR
+    desc "create NAME", "create an MtG sqlite3 Db with the given NAME"
     # TODO: Add quiet option option :quiet, :type => :boolean
     def create(name)
       name = File.expand_path(name)
@@ -28,5 +28,16 @@ module MtgDb
       MtgDb.download_double_faced_cards(name, tmp_dir)
       MtgDb.add_double_faced_cards_to_db(name, tmp_dir)
     end
+
+    desc "mangle NAME", "mangle the SQLite3 Db file header"
+    def mangle(name)
+      name = File.expand_path(name)
+      if not MtgDb.is_sqlite3?(name)
+        puts "File is either already mangled or not an SQLite3 database: #{name}"
+      else
+        puts "Mangling the SQLite3 file header"
+        MtgDb.mangle(name)
+      end
+    end
   end
-end 
+end

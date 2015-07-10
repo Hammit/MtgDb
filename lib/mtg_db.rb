@@ -11,6 +11,8 @@ module MtgDb
   ALL_CARDS_DIR = 'standard'
   DOUBLE_FACED_DIR = 'double-faced'
   SCHEMA_FILENAME = File.join(__dir__, '..', 'sql', 'cards.schema.sql')
+  SQLITE3_HEADER_STRING_LENGTH = 15
+  SQLITE3_HEADER_STRING = "SQLite format 3"
 
   @@standard_files_downloaded = nil
 
@@ -128,6 +130,25 @@ module MtgDb
         puts "\tProcessing Double-Faced Card: #{faceup_card.name} <=> #{facedown_card.name}"
         model = MtgDb::Models::DoubleFaced.find_or_create(:faceup_card => faceup_card, :facedown_card => facedown_card)
       end
+    end
+  end
+
+  # Use this to test if a given filename is an sqlite3 db
+  def self.is_sqlite3?(db_filename)
+    header = IO.binread(db_filename, SQLITE3_HEADER_STRING_LENGTH)
+    return (header == SQLITE3_HEADER_STRING)
+  end
+
+  # Mangle the header of an SQLite3 file
+  def self.mangle(db_filename)
+    header = ''
+    SQLITE3_HEADER_STRING_LENGTH.times do
+      header += (Random.rand(26) + 48).chr
+    end
+    
+    File.open(db_filename, 'r+b') do |file|
+      file.seek(0, IO::SEEK_SET)
+      file.print(header)
     end
   end
 end
