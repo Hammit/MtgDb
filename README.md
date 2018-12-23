@@ -14,6 +14,16 @@ Install it yourself as:
     mtg_db create NAME     # create an MtG sqlite3 Db with the given NAME
     mtg_db help [COMMAND]  # Describe available commands or one specific command
 
+## Testing
+
+To run all tests
+
+    rake test
+
+To run a specific test
+
+    rake test TESTOPTS="--name=test_2_db_created"
+
 ## Notes
 Downloading card information from [The Gatherer](http://gatherer.wizards.com/ "The Gatherer")
 can take a long time. Be prepared to wait a while when creating the db.

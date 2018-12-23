@@ -1,7 +1,7 @@
 # require 'pry'
+require_relative 'constants'
 require 'mechanize'
 require 'uri'
-require_relative 'constants'
 
 module MtgDb
   module Parsers
@@ -14,7 +14,7 @@ module MtgDb
       def initialize(uri = nil, response = nil, body = nil, code = nil)
         super(uri, response, body, code)
         @cards = parse_cards
-        #p @cards
+        # p @cards
       end
 
     private
@@ -80,7 +80,7 @@ module MtgDb
         supertype, part, other = type_line.partition("\r\n")
         matches = other.scan(PT_REGEX)
         hand_modifier, life_modifier = matches[0].compact
-        { :hand_modifier => hand_modifier, :life_modifier => life_modifier }
+        { hand_modifier: hand_modifier, life_modifier: life_modifier }
       end
 
       def planeswalker_data(node)
@@ -89,7 +89,7 @@ module MtgDb
         if loyalty_match
           loyalty = loyalty_match[1]
         end
-        { :loyalty => loyalty }
+        { loyalty: loyalty }
       end
 
       # When the supertype is a Vanguard, there is a Hand/Life Modifier and when
@@ -113,11 +113,11 @@ module MtgDb
       end
 
       def rules(node)
-        #node.search('div.rulesText').text.strip # doesn't account for images or multiple paragraphs formatting properly
+        # node.search('div.rulesText').text.strip # doesn't account for images or multiple paragraphs formatting properly
         rules_nodeset = node.search('div.rulesText')
-        rules_nodeset.search('img').each {|node| node.replace( "{#{node['alt']}}" )} # replace images in the rules with the image alt text
+        rules_nodeset.search('img').each{ |node| node.replace("{#{node['alt']}}") } # replace images in the rules with the image alt text
         rules_text = ''
-        rules_nodeset.search('p').each {|node| rules_text << node.text + "\n"}
+        rules_nodeset.search('p').each{ |node| rules_text << node.text + "\n" }
         return rules_text.chomp
       end
 
@@ -168,7 +168,7 @@ module MtgDb
 
     # Double-Faced cards have 2x .cardDetails sections, the face-up and face-down cards
     class DoubleFacedCardDetailsParser < Mechanize::Page
-      DEBUG = false
+      DEBUG = true
 
       attr_reader :cards, :faceup_card_name, :facedown_card_name
 
@@ -181,7 +181,7 @@ module MtgDb
       end
 
       private
-      
+
       def parse_cards
         cards = []
         card_nodes = search('.cardDetails')
@@ -189,11 +189,11 @@ module MtgDb
         # Each page has 2 cards if it's transformable
         if card_nodes.size == 2
           face_up_name = name(card_nodes.first)
-#           face_up_card = Card.where(:name => face_up_name).first
+          # face_up_card = Card.where(:name => face_up_name).first
           cards << face_up_name
 
           face_down_name = name(card_nodes.last)
-#           face_down_card = Card.where(:name => face_down_name).first
+          # face_down_card = Card.where(:name => face_down_name).first
           cards << face_down_name
         end
         # p cards if DEBUG
