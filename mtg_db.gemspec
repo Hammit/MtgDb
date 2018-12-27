@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'mtg_db'
   spec.version       = MtgDb::VERSION
   spec.authors       = ['Byron Hammond']
-  spec.email         = ['byron_hammond@yahoo.com']
+  spec.email         = ['byronester@gmail.com']
   spec.summary       = %q{Create an SQLite3 database of all the MtG cards listed on The Gatherer}
   spec.description   = %q{Spiders The Gatherer collecting info about MtG cards which are then put in an SQLite3 Db}
   spec.homepage      = 'https://github.com/Hammit/mtg-database'
@@ -28,5 +28,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activesupport', '~> 5.2'
   spec.add_dependency 'mechanize', '~> 2.7'
   spec.add_dependency 'sequel', '~> 5.15'
+  spec.add_dependency 'sqlite3', '~> 1.3'
   spec.add_dependency 'thor', '~> 0.20'
 end
