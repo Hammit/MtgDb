@@ -1,6 +1,6 @@
-# MtgDb
+# MtgDb [![Build Status](https://travis-ci.org/Hammit/mtg-database.svg?branch=master)](https://travis-ci.org/Hammit/mtg-database)
 
-A ruby (2.1) program that creates an SQLite3 database containing Magic: The Gathering
+A ruby program that creates an SQLite3 database containing Magic: The Gathering
 card information collected from [The Gatherer](http://gatherer.wizards.com/ "The Gatherer").
 
 ## Installation
