@@ -33,13 +33,13 @@ module MtgDb
       MtgDb.add_double_faced_cards_to_db(name, tmp_dir)
     end
 
-    desc "mangle NAME", "mangle the SQLite3 Db file header"
+    desc 'mangle NAME', 'mangle the SQLite3 Db file header'
     def mangle(name)
       name = File.expand_path(name)
       if not MtgDb.is_sqlite3?(name)
         puts "File is either already mangled or not an SQLite3 database: #{name}"
       else
-        puts "Mangling the SQLite3 file header"
+        puts 'Mangling the SQLite3 file header'
         MtgDb.mangle(name)
       end
     end

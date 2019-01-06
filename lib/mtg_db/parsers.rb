@@ -1,4 +1,3 @@
-# require 'pry'
 require_relative 'constants'
 require 'mechanize'
 require 'uri'
@@ -14,10 +13,10 @@ module MtgDb
       def initialize(uri = nil, response = nil, body = nil, code = nil)
         super(uri, response, body, code)
         @cards = parse_cards
-        # p @cards
       end
 
-    private
+      private
+
       # Each page in standard format has a bunch of cards
       def parse_cards
         cards = []
@@ -161,7 +160,7 @@ module MtgDb
           set = match['SET']
           rarity = match['RARITY']
 
-          { :multiverse_id => multiverse_id, :set => set, :rarity => rarity, :set_abbreviation => set_abbreviation }
+          { multiverse_id: multiverse_id, set: set, rarity: rarity, set_abbreviation: set_abbreviation }
         end
       end
     end
@@ -177,7 +176,6 @@ module MtgDb
         @cards = parse_cards
         @faceup_card_name = @cards.first
         @facedown_card_name = @cards.last
-        #p @cards
       end
 
       private
@@ -185,7 +183,6 @@ module MtgDb
       def parse_cards
         cards = []
         card_nodes = search('.cardDetails')
-        # binding.pry
         # Each page has 2 cards if it's transformable
         if card_nodes.size == 2
           face_up_name = name(card_nodes.first)
@@ -196,7 +193,6 @@ module MtgDb
           # face_down_card = Card.where(:name => face_down_name).first
           cards << face_down_name
         end
-        # p cards if DEBUG
 
         cards
       end
@@ -254,6 +250,5 @@ module MtgDb
         subtype
       end
     end
-
   end
 end

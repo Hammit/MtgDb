@@ -3,8 +3,9 @@ require 'mechanize'
 
 module MtgDb
   module Downloaders
+    # Base class for all downloaders
     class DownloaderBase
-      DEFAULT_OUTPUT_DIR = 'output'.freeze
+      DEFAULT_OUTPUT_DIR = 'output'
       attr_reader :agent
       attr_accessor :output_dir
 
@@ -65,7 +66,7 @@ module MtgDb
     # Useful for double-faced cards, where we can associate the face-up and face-down cards, both on this page
     class CardDetailsDownloader < DownloaderBase
       DEBUG = true
-      CARD_DETAILS_URL = 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=<PARAM_0>'.freeze
+      CARD_DETAILS_URL = 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=<PARAM_0>'
 
       def start(card_name, card_multiverse_id)
         url = CARD_DETAILS_URL

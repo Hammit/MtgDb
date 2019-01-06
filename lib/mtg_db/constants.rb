@@ -32,8 +32,8 @@ module MtgDb
       'Phyrexian Red': '(R/P)',
       'Phyrexian Green': '(G/P)',
 
-      'Variable Colorless': 'X',
-    }.freeze
+      'Variable Colorless': 'X'
+    }
 
     # TODO: See if we can (?DEFINE) subroutines in the regex as per Perl/PCRE
     # http://www.regular-expressions.info/subroutine.html

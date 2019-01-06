@@ -29,7 +29,7 @@ Downloading card information from [The Gatherer](http://gatherer.wizards.com/ "T
 can take a long time. Be prepared to wait a while when creating the db.
 
 ## Misc
-* Schema for the Db is in sql/cards.schema.sql
+* Schema for the Db is in sql/db.schema.sql
 * bundle exec bin/mtg_db help
 
 ## Contributing

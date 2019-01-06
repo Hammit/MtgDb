@@ -9,11 +9,11 @@ require 'tempfile'
 # Top level module
 module MtgDb
   TMP_DIR = File.join(Dir.tmpdir, 'mtg')
-  ALL_CARDS_DIR = 'standard'.freeze
-  DOUBLE_FACED_DIR = 'double-faced'.freeze
-  SCHEMA_FILENAME = File.join(__dir__, '..', 'sql', 'cards.schema.sql')
+  ALL_CARDS_DIR = 'standard'
+  DOUBLE_FACED_DIR = 'double-faced'
+  SCHEMA_FILENAME = File.join(__dir__, '..', 'sql', 'db.schema.sql')
   SQLITE3_HEADER_STRING_LENGTH = 15
-  SQLITE3_HEADER_STRING = "SQLite format 3"
+  SQLITE3_HEADER_STRING = 'SQLite format 3'
 
   # TODO: Remove the accessor as it's only required for debugging purposes
   class << self; attr_accessor :standard_files_downloaded end
@@ -107,7 +107,7 @@ module MtgDb
     db.disconnect
   end
 
-  # Downloading
+  # Downloading Double-Faced Cards
   def self.download_double_faced_cards(db_filename, tmp_dir)
     tmp_dir ||= TMP_DIR
     tmp_dir = File.join(tmp_dir, DOUBLE_FACED_DIR)
@@ -125,8 +125,11 @@ module MtgDb
       puts "#{card.name}, #{multiverse_id}"
       downloader.start(card.name.parameterize, multiverse_id)
     end
+
+    db.disconnect
   end
 
+  # Adding Downloaded Double-Faced Cards to Db
   def self.add_double_faced_cards_to_db(db_filename, tmp_dir)
     tmp_dir ||= TMP_DIR
     tmp_dir = File.join(tmp_dir, DOUBLE_FACED_DIR)
@@ -173,7 +176,7 @@ module MtgDb
     SQLITE3_HEADER_STRING_LENGTH.times do
       header += (Random.rand(26) + 48).chr
     end
-    
+
     File.open(db_filename, 'r+b') do |file|
       file.seek(0, IO::SEEK_SET)
       file.print(header)
