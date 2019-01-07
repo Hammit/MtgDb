@@ -35,36 +35,26 @@ module MtgDb
       'Variable Colorless': 'X'
     }
 
-    # TODO: See if we can (?DEFINE) subroutines in the regex as per Perl/PCRE
-    # http://www.regular-expressions.info/subroutine.html
-    # http://www.regular-expressions.info/recursecapture.html
-    PT_REGEX = /
+    PT_REGEX = %r[
+      (?<INTEGER> [+-]? \d+){0}
+      (?<FRACTION> { \d+ / \d+ }){0}
+      (?<EXPONENT> { \^ \d+ }){0}
+      (?<VARIABLE> \*){0}
+      (?<OPERATOR> [+-]){0}
+      (?<COMPONENT> (\g<OPERATOR>) | (\g<INTEGER>) | (\g<FRACTION>) | (\g<EXPONENT>) | (\g<VARIABLE>)){0}
+      (?<ATTRIBUTE> (\g<COMPONENT>)+){0}
+      ^
       \(?
-        (
-          (?<INTEGER> [+-]? \d+)
-          |
-          (?<OPERATOR> [+-])
-          |
-          (?<FRACTION> \{\d+ \/ \d+ \})
-          |
-          (?<EXPONENT> \{ \^ \d+ \})
-          |
-          (?<VARIABLE> \*)
-        )
-        \/
-        (
-          (?<INTEGER> [+-]? \d+)
-          |
-          (?<OPERATOR> [+-])
-          |
-          (?<FRACTION> \{\d+ \/ \d+ \})
-          |
-          (?<EXPONENT> \{ \^ \d+ \})
-          |
-          (?<VARIABLE> \*)
-        )
+      (
+        (?<POWER>\g<ATTRIBUTE>)
+      )
+      /
+      (
+        (?<TOUGHNESS>\g<ATTRIBUTE>)
+      )
       \)?
-    /x
+      $
+    ]x
 
     SET_VERSION_REGEX = /^(?<SET>.*) \((?<RARITY>.*)\)$/o
   end

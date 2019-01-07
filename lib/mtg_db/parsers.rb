@@ -65,10 +65,10 @@ module MtgDb
         type_hash[:subtype] = subtype(node)
 
         other_data = case type_hash[:supertype]
-          when 'Vanguard' then vanguard_data(node)
-          when 'Planeswalker' then planeswalker_data(node)
-          else {}
-        end
+                     when 'Vanguard' then vanguard_data(node)
+                     when 'Planeswalker' then planeswalker_data(node)
+                     else {}
+                     end
 
         type_hash.merge! other_data
       end
@@ -76,10 +76,14 @@ module MtgDb
       def vanguard_data(node)
         type_line = node.search('span.typeLine').text
 
-        supertype, part, other = type_line.partition("\r\n")
-        matches = other.scan(PT_REGEX)
-        hand_modifier, life_modifier = matches[0].compact
-        { hand_modifier: hand_modifier, life_modifier: life_modifier }
+        components = type_line.split(/\r\n/)
+        hand_life = components[-1].strip
+        hand_life.match(PT_REGEX) do |match|
+          # Hand/Life modifiers are prefixed with +/- operators
+          hand_modifier = match['POWER'].to_i
+          life_modifier = match['TOUGHNESS'].to_i
+          return { hand_modifier: hand_modifier, life_modifier: life_modifier }
+        end
       end
 
       def planeswalker_data(node)
@@ -122,21 +126,15 @@ module MtgDb
 
       def power(node)
         # '(*/{^2})'.scan(PT_REGEX) => [[nil, nil, nil, nil, "*"], [nil, nil, nil, "{^2}", nil]]
-        matches = node.search('span.typeLine').text.scan(PT_REGEX)
-        if matches[0]
-          matches[0].compact[0]
-        else
-          nil
+        node.search('span.typeLine').text.match(PT_REGEX) do |match|
+          return match['POWER']
         end
       end
 
       def toughness(node)
         # '(*/{^2})'.scan(PT_REGEX) => [[nil, nil, nil, nil, "*"], [nil, nil, nil, "{^2}", nil]]
-        matches = node.search('span.typeLine').text.scan(PT_REGEX)
-        if matches[0]
-          matches[0].compact[1]
-        else
-          nil
+        node.search('span.typeLine').text.match(PT_REGEX) do |match|
+          match['TOUGHNESS']
         end
       end
 
